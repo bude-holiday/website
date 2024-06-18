@@ -15,7 +15,7 @@
     "@tinacms/cli"
   ],
   "dependencies": {
-    "@netlify/remix-edge-adapter": "^3.3.0",
+    "@netlify/remix-adapter": "^2.4.0",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",

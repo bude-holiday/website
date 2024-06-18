@@ -1,4 +1,4 @@
-import { defineConfig } from "tinacms";
+import {defineConfig} from 'tinacms';
 import prices from './collections/Prices';
 
 export const config = defineConfig({
@@ -7,21 +7,16 @@ export const config = defineConfig({
 	token: process.env.TINA_TOKEN,
 	media: {
 		tina: {
-			publicFolder: "public",
-			mediaRoot: "uploads",
+			publicFolder: 'public',
+			mediaRoot: 'uploads',
 		},
 	},
 	build: {
-		publicFolder: "public",
-		outputFolder: "admin",
+		publicFolder: 'public',
+		outputFolder: 'admin',
 	},
 	schema: {
 		collections: [prices],
-	},
-	search: {
-		tina: {
-			indexerToken: process.env.TINA_SEARCH
-		}
 	}
 });
 

@@ -18,6 +18,11 @@ export const config = defineConfig({
 	schema: {
 		collections: [prices],
 	},
+	search: {
+		tina: {
+			indexerToken: process.env.TINA_SEARCH
+		}
+	}
 });
 
 export default config;

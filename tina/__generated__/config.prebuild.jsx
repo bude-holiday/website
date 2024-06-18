@@ -63,6 +63,11 @@ var config = defineConfig({
   },
   schema: {
     collections: [Prices_default]
+  },
+  search: {
+    tina: {
+      indexerToken: process.env.TINA_SEARCH
+    }
   }
 });
 var config_default = config;

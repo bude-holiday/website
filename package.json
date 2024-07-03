@@ -8,7 +8,8 @@
     "dev": "tinacms dev -c \"remix vite:dev\"",
     "lint": "eslint --ignore-path .gitignore --ignore-pattern '*/__generated__/*' --ignore-pattern '/public/admin/*' --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "vitest"
   },
   "trustedDependencies": [
     "tinacms",
@@ -28,6 +29,9 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^2.10.0",
+    "@testing-library/dom": "^10.3.0",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
     "@tinacms/cli": "^1.5.46",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -39,6 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.9.0",
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "jsdom": "^24.1.0",
     "prettier": "^3.3.2",
     "typescript": "^5.5.3",
     "vite": "^5.3.2",

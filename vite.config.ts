@@ -1,9 +1,10 @@
-import {vitePlugin as remix} from '@remix-run/dev';
-import {defineConfig} from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import {netlifyPlugin} from '@netlify/remix-adapter/plugin';
-import { checker } from 'vite-plugin-checker';
-import packageInfo from "./package.json"
+/// <reference types="vitest" />
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { netlifyPlugin } from "@netlify/remix-adapter/plugin";
+import { checker } from "vite-plugin-checker";
+import packageInfo from "./package.json";
 
 export default defineConfig({
 	plugins: [
@@ -19,8 +20,13 @@ export default defineConfig({
 		checker({
 			typescript: true,
 			eslint: {
-				lintCommand: packageInfo.scripts.lint
-			}
+				lintCommand: packageInfo.scripts.lint,
+			},
 		}),
 	],
+	test: {
+		globals: true,
+		environment: "jsdom",
+		setupFiles: "./tests/setup.ts",
+	},
 });

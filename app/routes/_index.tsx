@@ -1,5 +1,4 @@
 import type { MetaFunction } from "@remix-run/node";
-import {AppShell} from '@mantine/core';
 
 export const meta: MetaFunction = () => {
   return [

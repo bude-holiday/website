@@ -16,14 +16,17 @@ const prices: Collection = {
 				{
 					name: "startDate",
 					type: "datetime",
+					required: true
 				},
 				{
 					name: "endDate",
-					type: "datetime"
+					type: "datetime",
+					required: true
 				},
 				{
 					name: "price",
-					type: "number"
+					type: "number",
+					required: true
 				}
 			],
 			ui: {
@@ -37,6 +40,9 @@ const prices: Collection = {
 		},
 	],
 	ui: {
+		router: () => {
+			return "/bookings"
+		},
 		allowedActions: {
 			create: false,
 			delete: false,

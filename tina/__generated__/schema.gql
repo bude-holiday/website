@@ -87,7 +87,7 @@ type Collection {
 union DocumentNode = Prices | Folder
 
 type PricesPrice {
-  startDate: String
+  startDate: String!
   endDate: String
   price: Float
 }

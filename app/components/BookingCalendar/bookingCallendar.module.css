@@ -1,0 +1,7 @@
+.day {
+
+}
+.day.range {
+	background-color: var(--mantine-primary-color-filled);
+}
+

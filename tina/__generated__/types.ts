@@ -166,7 +166,7 @@ export type DocumentNode = Prices | Folder;
 
 export type PricesPrice = {
   __typename?: 'PricesPrice';
-  startDate?: Maybe<Scalars['String']['output']>;
+  startDate: Scalars['String']['output'];
   endDate?: Maybe<Scalars['String']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
 };
@@ -295,14 +295,14 @@ export type PricesMutation = {
   price?: InputMaybe<Array<InputMaybe<PricesPriceMutation>>>;
 };
 
-export type PricesPartsFragment = { __typename: 'Prices', price?: Array<{ __typename: 'PricesPrice', startDate?: string | null, endDate?: string | null, price?: number | null } | null> | null };
+export type PricesPartsFragment = { __typename: 'Prices', price?: Array<{ __typename: 'PricesPrice', startDate: string, endDate?: string | null, price?: number | null } | null> | null };
 
 export type PricesQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PricesQuery = { __typename?: 'Query', prices: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price?: Array<{ __typename: 'PricesPrice', startDate?: string | null, endDate?: string | null, price?: number | null } | null> | null } };
+export type PricesQuery = { __typename?: 'Query', prices: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price?: Array<{ __typename: 'PricesPrice', startDate: string, endDate?: string | null, price?: number | null } | null> | null } };
 
 export type PricesConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -314,7 +314,7 @@ export type PricesConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PricesConnectionQuery = { __typename?: 'Query', pricesConnection: { __typename?: 'PricesConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PricesConnectionEdges', cursor: string, node?: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price?: Array<{ __typename: 'PricesPrice', startDate?: string | null, endDate?: string | null, price?: number | null } | null> | null } | null } | null> | null } };
+export type PricesConnectionQuery = { __typename?: 'Query', pricesConnection: { __typename?: 'PricesConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PricesConnectionEdges', cursor: string, node?: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price?: Array<{ __typename: 'PricesPrice', startDate: string, endDate?: string | null, price?: number | null } | null> | null } | null } | null> | null } };
 
 export const PricesPartsFragmentDoc = gql`
     fragment PricesParts on Prices {

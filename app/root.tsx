@@ -1,15 +1,19 @@
-import "@mantine/core/styles.css";
+import styles from "@mantine/core/styles.css?url";
 
-import {Links, Meta, Outlet, Scripts, ScrollRestoration, NavLink as RemixNavLink} from '@remix-run/react';
-import { ColorSchemeScript, MantineProvider, AppShell, Burger, NavLink } from "@mantine/core";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, NavLink as RemixNavLink, LinkProps } from "@remix-run/react";
+import { ColorSchemeScript, MantineProvider, AppShell, Burger, NavLink, NavLinkProps } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { LinksFunction } from "@remix-run/node";
+
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	const [opened, { toggle }] = useDisclosure();
-	const pages = [
+	const links: Array<LinkProps & NavLinkProps> = [
 		{ to: "/", label: "Home" },
 		{ to: "/gallery", label: "Gallery" },
-		{ to: "/prices", label: "Prices" },
+		{ to: "/bookings", label: "Bookings" },
+		{ to: "/admin/index.html", label: "Admin", reloadDocument: true },
 	];
 	return (
 		<html lang="en">
@@ -27,8 +31,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 							<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
 						</AppShell.Header>
 						<AppShell.Navbar p="md">
-							{pages.map((page) => (
-								<NavLink key={page.to} component={RemixNavLink} to={page.to} label={page.label} />
+							{links.map((link) => (
+								<NavLink key={`${link.to}`} component={RemixNavLink} {...link} />
 							))}
 						</AppShell.Navbar>
 						<AppShell.Main>{children}</AppShell.Main>

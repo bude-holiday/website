@@ -17,7 +17,8 @@ var prices = {
       fields: [
         {
           name: "startDate",
-          type: "datetime"
+          type: "datetime",
+          required: true
         },
         {
           name: "endDate",
@@ -38,6 +39,9 @@ var prices = {
     }
   ],
   ui: {
+    router: () => {
+      return "/bookings";
+    },
     allowedActions: {
       create: false,
       delete: false

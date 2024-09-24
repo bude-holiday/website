@@ -1,5 +1,6 @@
 import {defineConfig} from 'tinacms';
 import prices from './collections/Prices';
+import Gallery from './collections/Gallery';
 
 export const config = defineConfig({
 	clientId: process.env.TINA_CLIENT_ID,
@@ -16,7 +17,7 @@ export const config = defineConfig({
 		outputFolder: 'admin',
 	},
 	schema: {
-		collections: [prices],
+		collections: [prices, Gallery],
 	}
 });
 

@@ -55,10 +55,13 @@ type Query {
   document(collection: String, relativePath: String): DocumentNode!
   prices(relativePath: String): Prices!
   pricesConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PricesFilter): PricesConnection!
+  gallery(relativePath: String): Gallery!
+  galleryConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: GalleryFilter): GalleryConnection!
 }
 
 input DocumentFilter {
   prices: PricesFilter
+  gallery: GalleryFilter
 }
 
 type DocumentConnectionEdges {
@@ -84,16 +87,17 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Prices | Folder
+union DocumentNode = Prices | Gallery | Folder
 
 type PricesPrice {
-  startDate: String!
-  endDate: String
-  price: Float
+  start: String!
+  end: String!
+  price: Float!
+  available: Boolean
 }
 
 type Prices implements Node & Document {
-  price: [PricesPrice]
+  price: [PricesPrice!]!
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -117,10 +121,16 @@ input NumberFilter {
   in: [Float]
 }
 
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
+}
+
 input PricesPriceFilter {
-  startDate: DatetimeFilter
-  endDate: DatetimeFilter
+  start: DatetimeFilter
+  end: DatetimeFilter
   price: NumberFilter
+  available: BooleanFilter
 }
 
 input PricesFilter {
@@ -138,6 +148,35 @@ type PricesConnection implements Connection {
   edges: [PricesConnectionEdges]
 }
 
+type Gallery implements Node & Document {
+  image: String!
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input ImageFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input GalleryFilter {
+  image: ImageFilter
+}
+
+type GalleryConnectionEdges {
+  cursor: String!
+  node: Gallery
+}
+
+type GalleryConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [GalleryConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -146,25 +185,34 @@ type Mutation {
   createFolder(collection: String, relativePath: String!): DocumentNode!
   updatePrices(relativePath: String!, params: PricesMutation!): Prices!
   createPrices(relativePath: String!, params: PricesMutation!): Prices!
+  updateGallery(relativePath: String!, params: GalleryMutation!): Gallery!
+  createGallery(relativePath: String!, params: GalleryMutation!): Gallery!
 }
 
 input DocumentUpdateMutation {
   prices: PricesMutation
+  gallery: GalleryMutation
   relativePath: String
 }
 
 input DocumentMutation {
   prices: PricesMutation
+  gallery: GalleryMutation
 }
 
 input PricesPriceMutation {
-  startDate: String
-  endDate: String
+  start: String
+  end: String
   price: Float
+  available: Boolean
 }
 
 input PricesMutation {
   price: [PricesPriceMutation]
+}
+
+input GalleryMutation {
+  image: String
 }
 
 schema {

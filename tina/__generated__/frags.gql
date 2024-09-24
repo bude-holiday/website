@@ -2,8 +2,14 @@ fragment PricesParts on Prices {
   __typename
   price {
     __typename
-    startDate
-    endDate
+    start
+    end
     price
+    available
   }
+}
+
+fragment GalleryParts on Gallery {
+  __typename
+  image
 }

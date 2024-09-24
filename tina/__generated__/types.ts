@@ -83,6 +83,8 @@ export type Query = {
   document: DocumentNode;
   prices: Prices;
   pricesConnection: PricesConnection;
+  gallery: Gallery;
+  galleryConnection: GalleryConnection;
 };
 
 
@@ -121,8 +123,24 @@ export type QueryPricesConnectionArgs = {
   filter?: InputMaybe<PricesFilter>;
 };
 
+
+export type QueryGalleryArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryGalleryConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<GalleryFilter>;
+};
+
 export type DocumentFilter = {
   prices?: InputMaybe<PricesFilter>;
+  gallery?: InputMaybe<GalleryFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -162,18 +180,19 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Prices | Folder;
+export type DocumentNode = Prices | Gallery | Folder;
 
 export type PricesPrice = {
   __typename?: 'PricesPrice';
-  startDate: Scalars['String']['output'];
-  endDate?: Maybe<Scalars['String']['output']>;
-  price?: Maybe<Scalars['Float']['output']>;
+  start: Scalars['String']['output'];
+  end: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  available?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type Prices = Node & Document & {
   __typename?: 'Prices';
-  price?: Maybe<Array<Maybe<PricesPrice>>>;
+  price: Array<PricesPrice>;
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
@@ -197,10 +216,16 @@ export type NumberFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
 };
 
+export type BooleanFilter = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type PricesPriceFilter = {
-  startDate?: InputMaybe<DatetimeFilter>;
-  endDate?: InputMaybe<DatetimeFilter>;
+  start?: InputMaybe<DatetimeFilter>;
+  end?: InputMaybe<DatetimeFilter>;
   price?: InputMaybe<NumberFilter>;
+  available?: InputMaybe<BooleanFilter>;
 };
 
 export type PricesFilter = {
@@ -220,6 +245,38 @@ export type PricesConnection = Connection & {
   edges?: Maybe<Array<Maybe<PricesConnectionEdges>>>;
 };
 
+export type Gallery = Node & Document & {
+  __typename?: 'Gallery';
+  image: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type ImageFilter = {
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type GalleryFilter = {
+  image?: InputMaybe<ImageFilter>;
+};
+
+export type GalleryConnectionEdges = {
+  __typename?: 'GalleryConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<Gallery>;
+};
+
+export type GalleryConnection = Connection & {
+  __typename?: 'GalleryConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<GalleryConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -229,6 +286,8 @@ export type Mutation = {
   createFolder: DocumentNode;
   updatePrices: Prices;
   createPrices: Prices;
+  updateGallery: Gallery;
+  createGallery: Gallery;
 };
 
 
@@ -276,33 +335,54 @@ export type MutationCreatePricesArgs = {
   params: PricesMutation;
 };
 
+
+export type MutationUpdateGalleryArgs = {
+  relativePath: Scalars['String']['input'];
+  params: GalleryMutation;
+};
+
+
+export type MutationCreateGalleryArgs = {
+  relativePath: Scalars['String']['input'];
+  params: GalleryMutation;
+};
+
 export type DocumentUpdateMutation = {
   prices?: InputMaybe<PricesMutation>;
+  gallery?: InputMaybe<GalleryMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DocumentMutation = {
   prices?: InputMaybe<PricesMutation>;
+  gallery?: InputMaybe<GalleryMutation>;
 };
 
 export type PricesPriceMutation = {
-  startDate?: InputMaybe<Scalars['String']['input']>;
-  endDate?: InputMaybe<Scalars['String']['input']>;
+  start?: InputMaybe<Scalars['String']['input']>;
+  end?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
+  available?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PricesMutation = {
   price?: InputMaybe<Array<InputMaybe<PricesPriceMutation>>>;
 };
 
-export type PricesPartsFragment = { __typename: 'Prices', price?: Array<{ __typename: 'PricesPrice', startDate: string, endDate?: string | null, price?: number | null } | null> | null };
+export type GalleryMutation = {
+  image?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PricesPartsFragment = { __typename: 'Prices', price: Array<{ __typename: 'PricesPrice', start: string, end: string, price: number, available?: boolean | null }> };
+
+export type GalleryPartsFragment = { __typename: 'Gallery', image: string };
 
 export type PricesQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PricesQuery = { __typename?: 'Query', prices: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price?: Array<{ __typename: 'PricesPrice', startDate: string, endDate?: string | null, price?: number | null } | null> | null } };
+export type PricesQuery = { __typename?: 'Query', prices: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price: Array<{ __typename: 'PricesPrice', start: string, end: string, price: number, available?: boolean | null }> } };
 
 export type PricesConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -314,17 +394,43 @@ export type PricesConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PricesConnectionQuery = { __typename?: 'Query', pricesConnection: { __typename?: 'PricesConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PricesConnectionEdges', cursor: string, node?: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price?: Array<{ __typename: 'PricesPrice', startDate: string, endDate?: string | null, price?: number | null } | null> | null } | null } | null> | null } };
+export type PricesConnectionQuery = { __typename?: 'Query', pricesConnection: { __typename?: 'PricesConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PricesConnectionEdges', cursor: string, node?: { __typename: 'Prices', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, price: Array<{ __typename: 'PricesPrice', start: string, end: string, price: number, available?: boolean | null }> } | null } | null> | null } };
+
+export type GalleryQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type GalleryQuery = { __typename?: 'Query', gallery: { __typename: 'Gallery', id: string, image: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type GalleryConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<GalleryFilter>;
+}>;
+
+
+export type GalleryConnectionQuery = { __typename?: 'Query', galleryConnection: { __typename?: 'GalleryConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'GalleryConnectionEdges', cursor: string, node?: { __typename: 'Gallery', id: string, image: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const PricesPartsFragmentDoc = gql`
     fragment PricesParts on Prices {
   __typename
   price {
     __typename
-    startDate
-    endDate
+    start
+    end
     price
+    available
   }
+}
+    `;
+export const GalleryPartsFragmentDoc = gql`
+    fragment GalleryParts on Gallery {
+  __typename
+  image
 }
     `;
 export const PricesDocument = gql`
@@ -382,6 +488,61 @@ export const PricesConnectionDocument = gql`
   }
 }
     ${PricesPartsFragmentDoc}`;
+export const GalleryDocument = gql`
+    query gallery($relativePath: String!) {
+  gallery(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...GalleryParts
+  }
+}
+    ${GalleryPartsFragmentDoc}`;
+export const GalleryConnectionDocument = gql`
+    query galleryConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: GalleryFilter) {
+  galleryConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...GalleryParts
+      }
+    }
+  }
+}
+    ${GalleryPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -390,6 +551,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     pricesConnection(variables?: PricesConnectionQueryVariables, options?: C): Promise<{data: PricesConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PricesConnectionQueryVariables, query: string}> {
         return requester<{data: PricesConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PricesConnectionQueryVariables, query: string}, PricesConnectionQueryVariables>(PricesConnectionDocument, variables, options);
+      },
+    gallery(variables: GalleryQueryVariables, options?: C): Promise<{data: GalleryQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GalleryQueryVariables, query: string}> {
+        return requester<{data: GalleryQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GalleryQueryVariables, query: string}, GalleryQueryVariables>(GalleryDocument, variables, options);
+      },
+    galleryConnection(variables?: GalleryConnectionQueryVariables, options?: C): Promise<{data: GalleryConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GalleryConnectionQueryVariables, query: string}> {
+        return requester<{data: GalleryConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GalleryConnectionQueryVariables, query: string}, GalleryConnectionQueryVariables>(GalleryConnectionDocument, variables, options);
       }
     };
   }

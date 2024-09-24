@@ -4,7 +4,7 @@ const prices: Collection = {
 	name: "prices",
 	path: "content",
 	match: {
-		include: "prices"
+		include: "prices",
 	},
 	format: "json",
 	fields: [
@@ -12,36 +12,40 @@ const prices: Collection = {
 			name: "price",
 			type: "object",
 			list: true,
+			required: true,
 			fields: [
 				{
-					name: "startDate",
+					name: "start",
 					type: "datetime",
-					required: true
+					required: true,
 				},
 				{
-					name: "endDate",
+					name: "end",
 					type: "datetime",
-					required: true
+					required: true,
 				},
 				{
 					name: "price",
 					type: "number",
-					required: true
-				}
+					required: true,
+				},
+				{
+					name: "available",
+					type: "boolean",
+				},
 			],
 			ui: {
 				itemProps: (item) => {
 					return {
 						label: `${item?.startDate} - ${item?.endDate}`,
-					}
+					};
 				},
-
-			}
+			},
 		},
 	],
 	ui: {
 		router: () => {
-			return "/bookings"
+			return "/bookings";
 		},
 		allowedActions: {
 			create: false,

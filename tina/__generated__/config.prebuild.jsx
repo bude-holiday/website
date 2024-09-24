@@ -14,19 +14,26 @@ var prices = {
       name: "price",
       type: "object",
       list: true,
+      required: true,
       fields: [
         {
-          name: "startDate",
+          name: "start",
           type: "datetime",
           required: true
         },
         {
-          name: "endDate",
-          type: "datetime"
+          name: "end",
+          type: "datetime",
+          required: true
         },
         {
           name: "price",
-          type: "number"
+          type: "number",
+          required: true
+        },
+        {
+          name: "available",
+          type: "boolean"
         }
       ],
       ui: {
@@ -50,6 +57,19 @@ var prices = {
 };
 var Prices_default = prices;
 
+// tina/collections/Gallery.ts
+var gallery = {
+  name: "gallery",
+  path: "content/images",
+  format: "json",
+  fields: [{
+    name: "image",
+    type: "image",
+    required: true
+  }]
+};
+var Gallery_default = gallery;
+
 // tina/config.ts
 var config = defineConfig({
   clientId: process.env.TINA_CLIENT_ID,
@@ -66,7 +86,7 @@ var config = defineConfig({
     outputFolder: "admin"
   },
   schema: {
-    collections: [Prices_default]
+    collections: [Prices_default, Gallery_default]
   }
 });
 var config_default = config;
